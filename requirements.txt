@@ -1,0 +1,2 @@
+pyyaml
+sagemaker==2.132.0

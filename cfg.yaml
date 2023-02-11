@@ -1,0 +1,27 @@
+processing:
+    image_uri: 366243680492.dkr.ecr.eu-west-1.amazonaws.com/heterogeneous-cluster-custom:latest
+    entry_point: model_build/processing/prepare.py
+    parameters:
+        output_folder: /opt/ml/processing/output
+        file_name: housing.csv
+    instance_count: 1
+    instance_type: ml.m5.xlarge
+    base_job_name: housing
+
+training:
+    image_uri: 366243680492.dkr.ecr.eu-west-1.amazonaws.com/heterogeneous-cluster-custom:latest
+    entry_point: train.py
+    source_dir: model_build/training
+    hyperparameters:
+        n_estimators: 150
+        target: MedHouseVal
+        tracking_uri: # <your mlflow tracking server URI>
+        experiment_name: housing
+        save_model_in_registry: True
+        model_name: housing-random-forest
+    instance_count: 1
+    instance_type: ml.m5.xlarge
+    base_job_name: housing
+
+pipeline:
+    name: housing
